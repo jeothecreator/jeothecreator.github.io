@@ -1,34 +1,116 @@
-<DOCTYPE! html>
+<!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="style.css">   
+  <meta charset="UTF-8" />
+  <title>Underworld Escape</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/cursor-effects@latest/dist/browser.js"></script>
 </head>
 
-
 <body>
-<h1>World Cup Jerserys For Sale</h1> 
+  <header id="topbar">
+    <h1>Underworld Escape - JEO
+    </h1>
+    <div id="timerBox">⏳ Time to exterminate: <span id="timer">0:20:00</span></div>
+  </header>
+<iframe width="314" height="321" scrolling="no" src="https://gify.pet/pet/pet.html?name=UNC&dob=1786575830&gender=f&element=Water&pet=https%3A%2F%2Fmedia.licdn.com%2Fdms%2Fimage%2Fv2%2FC5603AQG4FGyWHVjeMg%2Fprofile-displayphoto-shrink_200_200%2Fprofile-displayphoto-shrink_200_200%2F0%2F1616694247839%3Fe%3D2147483647%26v%3Dbeta%26t%3DRQsVSM0frixRr9VCT0ivaMgTGGKrZ_jDa4ZKwN2lgfo&map=https%3A%2F%2Fcdn.mos.cms.futurecdn.net%2FiDCjUG336MCLnqEKr9vpxB-1200-80.jpg&background=https%3A%2F%2Fcdn.mos.cms.futurecdn.net%2FiDCjUG336MCLnqEKr9vpxB-1200-80.jpg&tablecolor=black&textcolor=black" frameborder="0"></iframe>
+  <!-- START SCREEN -->
+  <section id="screen-start" class="screen active">
+    <h2>Introduction HELLO!</h2>
+    <p>Solve all puzzles to unlock the Final Puzzle before time runs out.</p>
+    <p>Hurry or you could lose!</p>
 
-<p>This is where you can find the best World Cup Jerseys</p>
-<div id="jersey"></div>
-<img src="t-shirt.png" width=200px>
-<div id="description">This is a high quality jersey for Brazil 2026</div>
-<div>
+    <!-- -----Start Screen Image -->
+    <img src="intro.png" width="900" alt="START_IMAGE">
+    <p></p>
+    <button id="btnStartGame">Start Game</button>
+  </section>
 
-<div id="reviews">
-<p id="name">Jeo</p>
-
-<p id="content">I liked this shirt a lot it looks very cool, and all my friends complimented me.</p>
-
-<p id="name">Capri</p>
-
-<p id="content">great high quality jersey!</p>
+<audio autoplay loop>
+  <source src="backround.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
 
 
 
+  <!-- MENU SCREEN -->
+  <section id="screen-menu" class="screen">
+    <h2>Puzzle Menu</h2>
+    <p>Select a puzzle. Solve all puzzles to unlock the Final Lock.</p>
 
+    <div id="menuGrid" class="menuGrid"></div>
 
-</div>
+    <button id="btnFinalLock" class="menuBtn" disabled>
+      Final Lock
+      <span class="status" id="statusFinal">🔒 Locked</span>
+    </button>
 
+    <button id="btnQuit" class="danger">QUIT</button>
+  </section>
 
+  <!-- PUZZLE SCREEN (re-used for every puzzle) -->
+  <section id="screen-puzzle" class="screen">
+    <h2 id="pTitle">Puzzle</h2>
+    <p id="pStory"></p>
 
+    <div class="puzzleBox">
+      <p id="pQuestion"></p>
+      <img id="pImage" src="" alt="PUZZLE_IMAGE" width="300" style="display:none;">
+      <video id="pVideo" width="500" style="display:none;" controls><source src="" type="video/quicktime"></video>
+      <div id="pMapContainer" style="display:none; margin-top:8px;"></div>
+      <div id="pAudioContainer" style="display:none; margin: 15px 0;">
+        <p><b>Click to play barks:</b></p>
+        <div id="audioButtonsContainer"></div>
+      </div>
+      <audio id="pAudioPlayer" style="display:none;"></audio>
+      <div id="pPythonContainer" style="display:none; margin: 15px 0; font-family: monospace; background-color: #1e1e1e; color: #00ff00; padding: 12px; border-radius: 6px; border: 1px solid #444;">
+        <div id="pythonCode" style="background-color: #252526; padding: 10px; border-radius: 4px; margin-bottom: 10px; font-size: 12px; line-height: 1.5; white-space: pre-wrap; word-wrap: break-word; max-height: 300px; overflow-y: auto;"></div>
+        <div style="margin-top: 10px;">
+          <p style="font-size: 12px; margin: 5px 0;"><b>Input (paste encoded message):</b></p>
+          <textarea id="pythonInput" style="width: 100%; height: 60px; background-color: #1e1e1e; color: #00ff00; border: 1px solid #444; padding: 5px; font-family: monospace; font-size: 12px; border-radius: 4px;"></textarea>
+          <button id="btnRunDecoder" style="margin-top: 8px; padding: 8px 12px;">▶ Run Decoder</button>
+          <p style="font-size: 12px; margin-top: 8px;"><b>Output:</b></p>
+          <div id="pythonOutput" style="background-color: #1e1e1e; padding: 8px; border: 1px solid #444; border-radius: 4px; min-height: 40px; font-size: 12px;"></div>
+        </div>
+      </div>
+      <label for="pAnswer"><b>Your Answer:</b></label><br />
+      <input id="pAnswer" type="text" placeholder="Type your answer..." />
+      <button id="btnCheckAnswer">Check</button>
+      <p class="msg" id="pMsg"></p>
+    </div>
+
+    <button id="btnBackToMenu" class="secondary">⬅ Back to Menu</button>
+  </section>
+
+  <!-- FINAL LOCK SCREEN -->
+  <section id="screen-final" class="screen">
+    <h2>Final Lock</h2>
+    <p>Enter the final code in this format: (example: <code>DATA</code>)</p>
+
+    <div class="puzzleBox">
+      <label for="finalInput"><b>Final Code:</b></label><br />
+      <input id="finalInput" type="text" placeholder="Example: DATA" />
+      <button id="btnFinalCheck">Unlock</button>
+      <p class="msg" id="finalMsg"></p>
+    </div>
+
+    <button id="btnFinalBack" class="secondary">⬅ Back to Menu</button>
+  </section>
+
+  <!-- SUCCESS -->
+  <section id="screen-success" class="screen">
+    <h2>✅ Escape Successful</h2>
+    <p>You solved the final lock and escaped!</p>
+    <button id="btnPlayAgain">Play Again</button>
+  </section>
+
+  <!-- FAIL -->
+  <section id="screen-fail" class="screen">
+    <h2> Time’s Up</h2>
+    <p>You ran out of time.</p>
+    <button id="btnTryAgain">Try Again</button>
+  </section>
+
+  <script src="game.js"></script>
+</body>
 </html>
